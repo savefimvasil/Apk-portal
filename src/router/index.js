@@ -8,8 +8,8 @@ import PostList from '@/components/Admin/PostList'
 import SliderList from '@/components/Admin/SliderList'
 import ChangePost from '@/components/Admin/ChangePost'
 import Post from '@/components/Ads/Post'
-import Login from '@/components/pages/Auth/Login'
-import Registration from '@/components/pages/Auth/Registration'
+import Login from '@/components/Auth/Login'
+import Registration from '@/components/Auth/Registration'
 
 Vue.use(Router)
 
