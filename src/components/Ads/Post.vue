@@ -34,7 +34,11 @@ export default {
   computed: {
     ad () {
       const id = this.id
-      return this.$store.getters.adById(id)
+      const ad = this.$store.getters.adById(id)
+      if (ad.author === 'NJcv0X8dtSU9qPAeUW1lGUETmfM2') {
+        ad.author = 'Admin'
+      }
+      return ad
     }
   },
   beforeMount () {

@@ -1,20 +1,20 @@
 <template>
 <div>
-  <content-slider class=""
+  <!--<content-slider class=""
                   :ads="promoGames"
                   title="Популярные игры"
   >
-  </content-slider>
+  </content-slider> -->
   <card-list title="Новые игры">
     <card-item :key="i"
                v-for="i in (games.length)"
                :ads="games[i-1]"
     ></card-item>
   </card-list>
-  <content-slider class=""
+  <!--<content-slider class=""
                   :ads="promoApps"
                   title="Лучшие приложения"
-  ></content-slider>
+  ></content-slider>-->
   <card-list title="Новые приложения">
     <card-item :key="i"
                v-for="i in (apps.length)"

@@ -11,7 +11,7 @@ class Ad {
     marketLink = '',
     youTubeLink = '',
     logo = '',
-    img = '',
+    img = [],
     promo = false,
     author = '',
     date = Date.now(),
@@ -44,19 +44,19 @@ export default {
   },
   mutations: {
     createAd (state, payload) {
+      console.log(payload)
       state.ads.push(payload)
     },
     loadAds (state, payload) {
+      console.log(payload)
       state.ads = payload
     }
   },
   actions: {
     async createAd ({commit, getters}, payload) {
       commit('clearError')
-      const logo = payload.logo
-      const img = payload.img
       try {
-        const newAd = new Ad(
+        const ad = new Ad(
           payload.name,
           payload.category,
           payload.description,
@@ -72,29 +72,14 @@ export default {
           getters.user.id,
           Date.now(),
           0,
-          [],
-          ''
+          []
         )
-        const ad = await fb.database().ref('ads').push(newAd)
-        const logoImageExt = logo.name.slice(logo.name.lastIndexOf('.'))
-        await fb.storage().ref(`ads/${ad.key}${logoImageExt}`).put(logo)
-        const logoImageSrc = await fb.storage().ref(`ads/${ad.key}${logoImageExt}`).getDownloadURL()
-        const id = ad.key
-        const imgImageSrc = []
-        for (let i = 0; i < img.length; i++) {
-          await fb.storage().ref(`ads/img/${ad.key}${logoImageExt}${i}`).put(img[i])
-          imgImageSrc[i] = await fb.storage().ref(`ads/img/${ad.key}${logoImageExt}${i}`).getDownloadURL()
-        }
-        fb.database().ref('ads').child(ad.key).update({
-          logo: logoImageSrc,
-          img: imgImageSrc
-        })
+        const newAd = await fb.database().ref('ads').push(ad)
         commit('createAd', {
-          ...newAd,
-          id: id,
-          logo: logoImageSrc,
-          img: imgImageSrc
+          ...ad,
+          id: newAd.key
         })
+        console.log(newAd)
       } catch (error) {
         commit('setError', error.message)
         throw error
@@ -108,6 +93,7 @@ export default {
         const ads = fbVal.val()
         Object.keys(ads).forEach(key => {
           const ad = ads[key]
+          console.log(key)
           resultAds.push(
             new Ad(
               ad.name,
@@ -119,8 +105,8 @@ export default {
               ad.developer,
               ad.marketLink,
               ad.youTubeLink,
-              ad.logo,
-              ad.img,
+              'https://upload.wikimedia.org/wikipedia/az/6/6a/Clash_of_Clans_logo.png',
+              ['https://upload.wikimedia.org/wikipedia/az/6/6a/Clash_of_Clans_logo.png'],
               ad.promo,
               ad.author,
               Date.now(),

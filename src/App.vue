@@ -15,7 +15,7 @@ import headerMenu from './components/pages/headerMenu'
 import footerMenu from './components/pages/footerMenu'
 import searchBox from './components/mainContent/searchBox'
 import home from './components/pages/Home'
-import newPost from './components/pages/Ads/NewPost'
+import newPost from './components/Admin/NewPost'
 
 export default {
   name: 'App',
@@ -107,6 +107,9 @@ export default {
   }
   .pt-50{
     padding-top: 50px;
+  }
+  .mb-20{
+    margin-bottom: 20px;
   }
   button{
     padding: 10px 20px 10px 20px;

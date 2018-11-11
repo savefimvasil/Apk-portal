@@ -1,8 +1,13 @@
 import Vue from 'vue'
+import routerGuard from './router-guard'
 import Router from 'vue-router'
 import Home from '@/components/pages/Home'
-import newPost from '@/components/pages/Ads/NewPost'
-import Post from '@/components/pages/Ads/Post'
+import Admin from '@/components/Admin/Admin'
+import newPost from '@/components/Admin/NewPost'
+import PostList from '@/components/Admin/PostList'
+import SliderList from '@/components/Admin/SliderList'
+import ChangePost from '@/components/Admin/ChangePost'
+import Post from '@/components/Ads/Post'
 import Login from '@/components/pages/Auth/Login'
 import Registration from '@/components/pages/Auth/Registration'
 
@@ -22,10 +27,37 @@ export default new Router({
       component: Post
     },
     {
+      path: '/admin',
+      name: 'admin',
+      component: Admin,
+      beforeEnter: routerGuard
+    },
+    {
       path: '/new',
       name: 'new',
-      component: newPost
-    }, {
+      component: newPost,
+      beforeEnter: routerGuard
+    },
+    {
+      path: '/postList',
+      name: 'PostList',
+      component: PostList,
+      beforeEnter: routerGuard
+    },
+    {
+      path: '/sliderList',
+      name: 'SliderList',
+      component: SliderList,
+      beforeEnter: routerGuard
+    },
+    {
+      path: '/change/:id',
+      props: true,
+      name: 'Change',
+      component: ChangePost,
+      beforeEnter: routerGuard
+    },
+    {
       path: '/login',
       name: 'login',
       component: Login

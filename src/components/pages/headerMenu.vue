@@ -1,11 +1,11 @@
 <template>
   <div class="header">
     <span class="logo"><router-link to="/" class="brand">The apk market</router-link></span>
-    <ul class="navigation">
+    <ul class="navigation unvisible-menu"
+        ref="menuPos"
+    >
       <li :key="linkMenu.name"
-          v-for="linkMenu in topMenuLinks()"
-          ref="menuPos"
-          class="unvisible-menu"
+          v-for="linkMenu in topMenuLinks"
       >
         <router-link :to="linkMenu.path"
                      class="navigation-item"
@@ -14,16 +14,25 @@
           {{linkMenu.name}}
         </router-link>
       </li>
-      <li :key="menuBtn.name"
-          class="unvisible-menu-btn"
-          @click="openMenu()"
-      >
-        <a class="navigation-item">
-          <i :class="menuBtn.logo" aria-hidden="true"></i>
-          {{menuBtn.name}}
-        </a>
+      <li v-if="isUserLoggedIn"
+          @click="logOut()">
+        <router-link :to="'/'"
+                     class="navigation-item"
+        >
+          <i class="fa fa-sign-out fa-1.5x pr-20" aria-hidden="true"></i>
+          Выйти
+        </router-link>
       </li>
     </ul>
+    <button :key="menuBtn.name"
+            class="unvisible-menu-btn"
+            @click="openMenu()"
+    >
+      <a class="navigation-item">
+        <i :class="menuBtn.logo" aria-hidden="true"></i>
+        {{menuBtn.name}}
+      </a>
+    </button>
   </div>
 </template>
 
@@ -40,21 +49,40 @@ export default {
     }
   },
   methods: {
-    topMenuLinks () {
-      return [
-        {name: 'Главная', logo: 'fa fa-home fa-1.5x', path: '/'},
-        {name: 'Игры', logo: 'fa fa-bomb fa-1.5x', path: '/games'},
-        {name: 'Приложения', logo: 'fa fa-play fa-1.5x', path: '/apps'},
-        {name: 'Войти', logo: 'fa fa-male fa-1.5x', path: '/login'},
-        {name: 'Добавить новость', logo: 'fa fa-plus-square fa-1.5x', path: '/new'}]
-    },
     openMenu () {
-      for (let i = 0; i < this.$refs.menuPos.length; i++) {
-        if (this.$refs.menuPos[i].className === 'unvisible-menu') {
-          this.$refs.menuPos[i].className = 'visible-menu'
-        } else {
-          this.$refs.menuPos[i].className = 'unvisible-menu'
+      if (this.$refs.menuPos.className === 'navigation unvisible-menu') {
+        this.$refs.menuPos.className = 'navigation visible-menu'
+      } else {
+        this.$refs.menuPos.className = 'navigation unvisible-menu'
+      }
+    },
+    logOut () {
+      this.$store.dispatch('logOutUser')
+    }
+  },
+  computed: {
+    isUserLoggedIn () {
+      return this.$store.getters.isUserLoggedIn
+    },
+    topMenuLinks () {
+      if (this.isUserLoggedIn) {
+        if (this.isUserLoggedIn.admin === true) {
+          return [
+            {name: 'Главная', logo: 'fa fa-home fa-1.5x', path: '/'},
+            {name: 'Игры', logo: 'fa fa-bomb fa-1.5x', path: '/games'},
+            {name: 'Приложения', logo: 'fa fa-play fa-1.5x', path: '/apps'},
+            {name: 'Админ Панель', logo: 'fa fa-plus-square fa-1.5x', path: '/admin'}]
+        } else if (this.isUserLoggedIn.admin === false) {
+          return [
+            {name: 'Главная', logo: 'fa fa-home fa-1.5x', path: '/'},
+            {name: 'Игры', logo: 'fa fa-bomb fa-1.5x', path: '/games'},
+            {name: 'Приложения', logo: 'fa fa-play fa-1.5x', path: '/apps'}]
         }
+      } else {
+        return [{name: 'Главная', logo: 'fa fa-home fa-1.5x', path: '/'},
+          {name: 'Игры', logo: 'fa fa-bomb fa-1.5x', path: '/games'},
+          {name: 'Приложения', logo: 'fa fa-play fa-1.5x', path: '/apps'},
+          {name: 'Войти', logo: 'fa fa-male fa-1.5x', path: '/login'}]
       }
     }
   }
@@ -75,6 +103,17 @@ export default {
     box-shadow: 0 0 10px #0e6f8c;
     flex-flow: row wrap;
     justify-content: space-between;
+  }
+  .header button {
+    background: #0e6f8c;
+    color: #e9f6ff;
+    border-top: 1px solid rgba(255,255,255,0.3);
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    border-radius: unset;
+  }
+  .header button:hover {
+    box-shadow: none;
+    background: darken(#0e6f8c, 2%);
   }
   .logo{
     background: #0e6f8c;

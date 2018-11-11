@@ -8,7 +8,7 @@
       <button class="btn-slider" ref="btnVisiblePrev" @click="changeIndex(-1, 0)">
         <i class="fa fa-arrow-left fa-2x" aria-hidden="true"></i>
       </button>
-      <img class="slider-img" :src="ads[indexAds].img[0]" alt="">
+      <img class="slider-img" :src="ads[indexAds].img" alt="">
       <div class="slider-info">
         <div class="slider-name">
           <h3>

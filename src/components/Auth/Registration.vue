@@ -1,7 +1,7 @@
 <template>
   <div class="flex">
     <div>
-      <h2 style="margin-bottom: 40px">Войти в аккаунт</h2>
+      <h2 style="margin-bottom: 20px">Создать новый аккаунт</h2>
       <form action="">
         <input title=""
                ref="email"
@@ -21,14 +21,21 @@
                @input="checkErrors('password')"
         >
         <p ref="passwordError" class="error-message"></p>
+        <input title=""
+               ref="confirmPassword"
+               type="password"
+               class="search-box"
+               placeholder="confirm password"
+               v-model="confirmPassword"
+               @input="checkErrors('confirmPassword')"
+        >
+        <p ref="confirmPasswordError" class="error-message"></p>
       </form>
       <div class="sub-footer">
-        <router-link to="/reg">Зарегистрировать новый Аккаунт</router-link>
         <button class="submit-btn"
-                ref="submitBtn"
-                @click="onSubmit()"
+                @click="onRegister()"
                 :disabled="!valid"
-        >Войти</button>
+        >Зарегистрироваться</button>
       </div>
     </div>
   </div>
@@ -45,20 +52,28 @@ export default {
     return {
       email: '',
       password: '',
-      valid: false,
+      confirmPassword: '',
       emailValid: false,
-      passwordValid: false
+      passwordValid: false,
+      confirmPasswordValid: false,
+      valid: false
     }
   },
   methods: {
-    onSubmit () {
+    onRegister () {
       const userData = {}
       if (this.valid) {
         userData.email = this.email
         userData.password = this.password
       }
-      this.email = ''
-      this.password = ''
+      this.$store.dispatch('registerUser', userData)
+        .then(() => {
+          this.$router.push('/login')
+          this.$store.dispatch('logOutUser')
+        })
+        .catch(error => {
+          alert(error.message)
+        })
     },
     checkErrors (n) {
       if (n === 'email') {
@@ -67,7 +82,10 @@ export default {
       if (n === 'password') {
         this.checkPasswordErrors()
       }
-      if (this.emailValid && this.passwordValid) this.valid = true
+      if (n === 'confirmPassword') {
+        this.checkConfirmPasswordErrors()
+      }
+      if (this.emailValid && this.passwordValid && this.confirmPasswordValid) this.valid = true
       else this.valid = false
     },
     checkEmailErrors () {
@@ -98,6 +116,21 @@ export default {
         this.$refs.passwordError.innerHTML = ''
         this.$refs.passwordError.style.marginBottom = '30px'
         this.passwordValid = true
+      }
+    },
+    checkConfirmPasswordErrors () {
+      if (this.password !== this.confirmPassword) {
+        this.$refs.confirmPassword.style.borderColor = 'red'
+        this.$refs.confirmPassword.style.boxShadow = '0 0 10px red'
+        this.$refs.confirmPasswordError.innerHTML = 'Пароли не совпадают'
+        this.$refs.confirmPasswordError.style.marginBottom = '10px'
+        this.confirmPasswordValid = false
+      } else {
+        this.$refs.confirmPassword.style.borderColor = '#0e6f8c'
+        this.$refs.confirmPassword.style.boxShadow = 'none'
+        this.$refs.confirmPasswordError.innerHTML = ''
+        this.$refs.confirmPasswordError.style.marginBottom = '30px'
+        this.confirmPasswordValid = true
       }
     }
   }
@@ -139,7 +172,7 @@ export default {
   }
   .sub-footer{
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: baseline;
   }
   button{

@@ -9,14 +9,14 @@
                  type="text"
                  class="search-box"
                  placeholder="Название"
-                 v-model="name"
+                 v-model="ad.name"
           >
         </div>
         <hr>
         <div class="between">
           <label for="">Категория: *</label>
           <select name=""
-                  v-model="category"
+                  v-model="ad.category"
                   class="search-box"
           >
             <option :key="category" v-for="category in categories">{{category}}</option>
@@ -30,7 +30,7 @@
                     cols="50"
                     class="search-box"
                     placeholder="Полное описание (1000 символов без пробелов)"
-                    v-model="description"
+                    v-model="ad.description"
           ></textarea>
         </div>
         <hr>
@@ -41,7 +41,7 @@
                     cols="50"
                     class="search-box"
                     placeholder="Краткое описание (50 символов без пробелов)"
-                    v-model="miniDescription"
+                    v-model="ad.miniDescription"
           ></textarea>
         </div>
         <hr>
@@ -51,7 +51,7 @@
                  type="text"
                  class="search-box"
                  placeholder="Версия приложения"
-                 v-model="appVersion"
+                 v-model="ad.appVersion"
           >
         </div>
         <hr>
@@ -61,7 +61,7 @@
                  type="text"
                  class="search-box"
                  placeholder="Версия Android"
-                 v-model="androidVersion"
+                 v-model="ad.androidVersion"
           >
         </div>
         <hr>
@@ -71,7 +71,7 @@
                  type="text"
                  class="search-box"
                  placeholder="Разработчик"
-                 v-model="developer"
+                 v-model="ad.developer"
           >
         </div>
         <hr>
@@ -81,7 +81,7 @@
                  type="text"
                  class="search-box"
                  placeholder="Ссылка на приложение Play Market"
-                 v-model="marketLink"
+                 v-model="ad.marketLink"
           >
         </div>
         <hr>
@@ -91,7 +91,32 @@
                  type="text"
                  class="search-box"
                  placeholder="Ссылка на приложение YouTube"
-                 v-model="youTubeLink"
+                 v-model="ad.youTubeLink"
+          >
+        </div>
+        <hr>
+        <div class="between">
+          <label for="">Лого:</label>
+          <input title=""
+                 type="file"
+                 class="search-box"
+          >
+        </div>
+        <hr>
+        <div class="between">
+          <label for="">Скриншоты:</label>
+          <input title=""
+                 type="file"
+                 class="search-box"
+          >
+        </div>
+        <hr>
+        <div class="between">
+          <label for="">Слайдер:</label>
+          <input title=""
+                 type="checkbox"
+                 class="search-box"
+                 v-model="ad.promo"
           >
         </div>
         <hr>
@@ -100,7 +125,7 @@
         <button class="submit-btn"
                 ref="submitBtn"
                 @click="onSubmit()"
-        >Отправить</button>
+        >Изменить</button>
       </div>
     </div>
   </div>
@@ -108,6 +133,7 @@
 
 <script>
 export default {
+  props: ['id'],
   data () {
     return {
       categories: ['Игры', 'Приложения'],
@@ -134,6 +160,12 @@ export default {
     },
     counterImage (i) {
       this.countImg += i
+    }
+  },
+  computed: {
+    ad () {
+      const id = this.id
+      return this.$store.getters.adById(id)
     }
   }
 }
