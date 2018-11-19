@@ -1,12 +1,16 @@
-import store from '../store/index'
+import store from '../store/user'
 
 export default function (from, to, next) {
-  if (store.getters.isUserLoggedIn) {
-    if (store.getters.user.admin === true) {
-      next()
+  store.mutations.loading = true
+  setTimeout(() => {
+    if (store.state.user) {
+      if (store.state.user.admin) {
+        next()
+      } else {
+        next('/')
+      }
+    } else {
+      next('/login?loginError=true')
     }
-  } else {
-    console.log(3)
-    next('/login?loginError=true')
-  }
+  }, 1000)
 }

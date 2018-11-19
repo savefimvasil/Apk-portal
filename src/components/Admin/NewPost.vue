@@ -35,17 +35,6 @@
         </div>
         <hr>
         <div class="between">
-          <label for="">Краткое: *</label>
-          <textarea name=""
-                    rows="2"
-                    cols="50"
-                    class="search-box"
-                    placeholder="Краткое описание (50 символов без пробелов)"
-                    v-model="miniDescription"
-          ></textarea>
-        </div>
-        <hr>
-        <div class="between">
           <label for="">Версия App: *</label>
           <input title=""
                  type="text"
@@ -143,7 +132,6 @@ export default {
       name: '',
       category: '',
       description: '',
-      miniDescription: '',
       appVersion: '',
       androidVersion: '',
       developer: '',

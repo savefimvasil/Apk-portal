@@ -18,7 +18,7 @@
       <p class="description">{{ad.description}}</p>
       <hr>
       <div class="flex-img">
-        <img :key="i" v-for="(image, i) in ad.img" :src="image" alt="" width="300px" height="170px">
+        <img :key="i" v-for="(image, i) in ad.img" :src="image" alt="" height="250px">
       </div>
       <hr>
       <div class="comments">
@@ -73,7 +73,6 @@ export default {
     width: 680px;
     box-sizing: border-box;
     display: flex;
-    order: 4;
     -webkit-flex-wrap: wrap;
     flex-wrap: wrap;
     justify-content: center;

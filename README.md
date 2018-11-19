@@ -1,5 +1,9 @@
 # apk-project
 
+ADMIN ACCOUNT FOR TEST:
+email: admin@gmail.com
+password: 123456
+
 > apk-android-portal
 
 ## Build Setup

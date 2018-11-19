@@ -32,6 +32,7 @@ export default {
   }
   .router-link:hover{
     box-shadow: 0 0 10px grey;
+    transition: 0.3s;
   }
   .router-link:focus{
     outline: none;

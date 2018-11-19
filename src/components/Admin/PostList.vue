@@ -2,12 +2,12 @@
   <div>
     <h1>Post List</h1>
     <hr>
-    <div :key="ad.id" v-for="ad in ads" class="flex-item">
-      <p>{{ad.name}}</p>
-      <p>{{ad.category}}</p>
-      <p>{{ad.viewCounter}}</p>
-      <router-link :to="'/change/' + ad.id">Перейти к редактированию</router-link>
-    </div>
+      <router-link :key="ad.id" v-for="ad in ads" class="flex-item" :to="'/change/' + ad.id">
+        <p>{{ad.name}}</p>
+        <p>{{ad.category}}</p>
+        <p>{{ad.viewCounter}}</p>
+        <p>Перейти к редактированию</p>
+      </router-link>
   </div>
 </template>
 
@@ -25,6 +25,10 @@ export default {
   hr{
     margin: 5px 0 10px 0;
   }
+  p{
+    width: 25%;
+    text-decoration: none;
+  }
   .flex-item{
     display: flex;
     justify-content: space-between;
@@ -32,5 +36,6 @@ export default {
     padding: 5px;
     margin: 5px 0;
     border-radius: 5px;
+    text-decoration: none;
   }
 </style>

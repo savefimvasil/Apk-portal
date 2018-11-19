@@ -14,6 +14,7 @@
   "dependencies": {
     "firebase": "^5.5.7",
     "vue": "^2.5.2",
+    "vue-flickity": "^1.1.2",
     "vue-router": "^3.0.1",
     "vuelidate": "^0.7.4",
     "vuex": "^3.0.1"

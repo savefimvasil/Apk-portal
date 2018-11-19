@@ -4,7 +4,6 @@ class Ad {
     name = '',
     category = '',
     description = '',
-    miniDescription = '',
     appVersion = '',
     androidVersion = '',
     developer = '',
@@ -22,7 +21,6 @@ class Ad {
     this.name = name
     this.category = category
     this.description = description
-    this.miniDescription = miniDescription
     this.appVersion = appVersion
     this.androidVersion = androidVersion
     this.marketLink = marketLink
@@ -52,6 +50,7 @@ export default {
   },
   actions: {
     async createAd ({commit, getters}, payload) {
+      commit('setLoading', true)
       commit('clearError')
       const logo = payload.logo
       const img = payload.img
@@ -95,13 +94,16 @@ export default {
           logo: logoImageSrc,
           img: imgImageSrc
         })
+        commit('setLoading', false)
       } catch (error) {
         commit('setError', error.message)
+        commit('setLoading', false)
         throw error
       }
     },
     async fetchAds ({commit}) {
       commit('clearError')
+      commit('setLoading', true)
       const resultAds = []
       try {
         const fbVal = await fb.database().ref('ads').once('value')
@@ -113,7 +115,6 @@ export default {
               ad.name,
               ad.category,
               ad.description,
-              ad.miniDescription,
               ad.appVersion,
               ad.androidVersion,
               ad.developer,
@@ -123,14 +124,16 @@ export default {
               ad.img,
               ad.promo,
               ad.author,
-              Date.now(),
+              ad.date,
               0,
               [],
               key))
         })
         commit('loadAds', resultAds)
+        commit('setLoading', false)
       } catch (error) {
         commit('setError', error.message)
+        commit('setLoading', false)
         throw error
       }
     }
@@ -163,6 +166,11 @@ export default {
       return adId => {
         return state.ads.find(ad => ad.id === adId)
       }
+    },
+    promoAds (state) {
+      return category => state.ads.filter(ad => {
+        if (ad.category === category && ad.promo) return ad
+      })
     }
   }
 }
